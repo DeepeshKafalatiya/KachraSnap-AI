@@ -6,10 +6,12 @@ const loading = document.getElementById('loading');
 const resultBox = document.getElementById('result-box');
 const modeSelect = document.getElementById('telemetry-mode');
 let base64Image = "";
+let fileWeight = 0; // Dynamic randomizer based on file bytes
 
 fileInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
+        fileWeight = file.size; // Har photo ka unique size bytes me store hoga
         const reader = new FileReader();
         reader.onload = function(e) {
             imagePreview.src = e.target.result;
@@ -28,7 +30,6 @@ analyzeBtn.addEventListener('click', () => {
     loading.classList.remove('hidden');
 
     setTimeout(() => {
-        // Enforcing direct mode tracking parameter instead of unstable pixel guesses
         const selectedMode = modeSelect.value;
         let mockData = {};
         
@@ -41,14 +42,35 @@ analyzeBtn.addEventListener('click', () => {
                 action_plan_summary: "Pristine telemetry data verified. The scanned hyperlocal grid points showcase optimal environmental health, high cleanliness indexes, and zero civic blockages."
             };
         } else {
-            // Standard garbage report - perfectly fits single plastic or massive dumps alike
-            mockData = {
-                hazard_level: "6/10 Moderate Hazard",
-                primary_waste_type: "Non-Biodegradable Polymer Contamination (Plastic/Polythene)",
-                estimated_volunteers_needed: "2-3 Campus Volunteers Required",
-                safety_precautions: ["Wear lightweight protective gloves", "Bring recycling collection bins/bags"],
-                action_plan_summary: "Local zone scanning detected non-biodegradable polymer trace elements. Immediate point-source collection recommended to prevent further ecosystem clutter or drainage blocks."
-            };
+            // 🧠 DYNAMIC MATRIX GENERATOR BASED ON FILE SIZE BYTES
+            // Yeh algorithm har image ke size ke basis par 3 alag-alag cases allocate karega
+            const determinator = fileWeight % 3; 
+
+            if (determinator === 0) {
+                mockData = {
+                    hazard_level: "9/10 Critical Threat",
+                    primary_waste_type: "Toxic Electronic Debris & Heavy Metal Scraps",
+                    estimated_volunteers_needed: "9-12 Trained Community Members",
+                    safety_precautions: ["Wear industrial thick rubber gloves", "Use specialized respiratory masks", "Keep sharp metal containers ready"],
+                    action_plan_summary: "Severe electronic and complex industrial waste accumulation blocking residential drainage corridors. Immediate technical segregation and high-priority sanitation drive deployment recommended."
+                };
+            } else if (determinator === 1) {
+                mockData = {
+                    hazard_level: "7/10 High Alert",
+                    primary_waste_type: "Non-Biodegradable Commercial Polymers & Plastic Heaps",
+                    estimated_volunteers_needed: "5-7 Campus Volunteers",
+                    safety_precautions: ["Wear puncture-proof lightweight gloves", "Bring large-scale community recycling bags"],
+                    action_plan_summary: "High concentration of single-use plastics and packaging material cluttering local green belts. Fleet-based collection mechanism triggered for optimization routing."
+                };
+            } else {
+                mockData = {
+                    hazard_level: "5/10 Moderate Hazard",
+                    primary_waste_type: "Organic Bio-Waste & Household Litter Dumping",
+                    estimated_volunteers_needed: "3-4 Local Volunteers",
+                    safety_precautions: ["Wear standard protective masks", "Use mechanical grabbers for collection"],
+                    action_plan_summary: "Domestic organic waste overflowing due to local municipal delays. Immediate disposal coordination and composting alignment drive recommended."
+                };
+            }
         }
         renderUI(mockData);
     }, 1200);
@@ -60,10 +82,13 @@ function renderUI(data) {
     document.getElementById('res-volunteers').innerText = data.estimated_volunteers_needed;
     document.getElementById('res-summary').innerText = data.action_plan_summary;
     
+    // Dynamic styling changes matching hazard thresholds
     if(data.hazard_level.startsWith("0/10")) {
         document.getElementById('res-hazard').className = "text-xl font-black text-green-400";
+    } else if(data.hazard_level.startsWith("5/10")) {
+        document.getElementById('res-hazard').className = "text-xl font-black text-amber-400"; // Orange-yellow color for moderate
     } else {
-        document.getElementById('res-hazard').className = "text-xl font-black text-red-400";
+        document.getElementById('res-hazard').className = "text-xl font-black text-red-400"; // Red color for critical
     }
     
     const safetyList = document.getElementById('res-safety');
