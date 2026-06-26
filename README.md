@@ -67,3 +67,4 @@ Open index.html directly using your default browser engine, or spin it up using 
 
 📄 Open Source Licensing
 This project is open-source and structured in compliance with the MIT License. Review the LICENSE file repository entry for strict regulatory usage guidelines.
+Give us a star if you like our project ..
