@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KachraSnap AI - Hyperlocal Problem Solver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col items-center p-4 sm:p-8">
+
+    <!-- Header Section -->
+    <header class="text-center max-w-xl mb-10">
+        <span class="bg-green-500/10 text-green-400 text-xs font-semibold px-3 py-1 rounded-full border border-green-500/20 uppercase tracking-wider">
+            Google x Coding Ninjas Vibe2Ship
+        </span>
+        <h1 class="text-4xl font-black text-white mt-3 tracking-tight">
+            🌱 KachraSnap <span class="text-green-400">AI</span>
+        </h1>
+        <p class="text-slate-400 mt-2 text-sm sm:text-base">
+            Empowering hyperlocal communities. Upload an image of local waste or hazards, and let Gemini auto-orchestrate an instant cleanup plan.
+        </p>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="w-full max-w-2xl bg-slate-800/50 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-slate-700/60">
+        
+        <!-- Upload Box Zone -->
+        <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-600 rounded-xl p-8 bg-slate-800/80 hover:border-green-400 hover:bg-slate-800 transition duration-200 cursor-pointer relative group" id="drop-zone">
+            <input type="file" id="file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+            <div class="p-4 bg-slate-700/50 rounded-full group-hover:scale-110 transition duration-200">
+                <svg class="w-8 h-8 text-slate-400 group-hover:text-green-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <p class="text-sm text-slate-300 text-center mt-4"><span class="font-bold text-green-400">Click to upload image</span> or drag and drop</p>
+        </div>
+
+        <!-- Image Preview Window -->
+        <div id="preview-container" class="hidden mt-6">
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">Target Image Preview:</p>
+            <img id="image-preview" src="#" alt="Preview" class="w-full h-64 object-cover rounded-xl border border-slate-600 shadow-md">
+        </div>
+
+        <!-- Action Button -->
+        <button id="analyze-btn" class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 hidden shadow-xl shadow-green-950/30 tracking-wide text-sm">
+            GENERATE AI ACTION PLAN 🚀
+        </button>
+
+        <!-- Loading Micro-UI -->
+        <div id="loading" class="hidden text-center my-8">
+            <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-400 rounded-full" role="status"></div>
+            <p class="text-slate-400 mt-3 text-xs tracking-widest uppercase animate-pulse">Gemini 1.5 Flash inspecting site analytics...</p>
+        </div>
+
+        <!-- AI Analytics Live Dashboard -->
+        <div id="result-box" class="hidden mt-8 border-t border-slate-700/60 pt-6">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+                <h3 class="text-lg font-bold text-white tracking-tight">📋 AI Hyperlocal Action Report</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">Hazard Severity</span>
+                    <span id="res-hazard" class="text-xl font-black text-red-400">-</span>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">Primary Material</span>
+                    <span id="res-waste" class="text-base font-semibold text-slate-200">-</span>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40 sm:col-span-2">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">Estimated Resource Workforce</span>
+                    <span id="res-volunteers" class="text-base font-medium text-slate-200">-</span>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40 sm:col-span-2">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">Crucial Safety Precautions</span>
+                    <ul id="res-safety" class="list-disc pl-5 text-xs text-amber-300 space-y-1.5 mt-2"></ul>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40 sm:col-span-2">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">Operational Action Summary</span>
+                    <p id="res-summary" class="text-xs text-slate-300 leading-relaxed mt-1.5">-</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-12 text-center text-xs text-slate-600">
+        KachraSnap AI • Powered by Google AI Studio & Gemini 1.5 Flash
+    </footer>
+
+    <!-- Standard runtime linkage configuration -->
+    <script src="app.js"></script>
+</body>
+</html>
