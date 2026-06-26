@@ -38,6 +38,14 @@
             <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-2">Target Image Preview:</p>
             <img id="image-preview" src="#" alt="Preview" class="w-full h-64 object-cover rounded-xl border border-slate-600 shadow-md">
         </div>
+        <!-- Modern Hackathon Mode Controller Dropdown -->
+        <div class="mb-4 text-left">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Target Telemetry Mode</label>
+            <select id="telemetry-mode" class="w-full bg-slate-800 border border-slate-700 text-white rounded-lg p-3 text-sm focus:outline-none focus:border-green-500 transition-colors">
+                <option value="garbage" selected>⚠️ Mode: Hyperlocal Waste & Hazard Analysis</option>
+                <option value="clean">🌱 Mode: Pristine Environmental Status Verification</option>
+            </select>
+        </div>
 
         <!-- Action Button -->
         <button id="analyze-btn" class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 hidden shadow-xl shadow-green-950/30 tracking-wide text-sm">
