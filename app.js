@@ -6,12 +6,12 @@ const loading = document.getElementById('loading');
 const resultBox = document.getElementById('result-box');
 const modeSelect = document.getElementById('telemetry-mode');
 let base64Image = "";
-let fileWeight = 0; // Dynamic randomizer based on file bytes
+let fileWeight = 0;
 
 fileInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
-        fileWeight = file.size; // Har photo ka unique size bytes me store hoga
+        fileWeight = file.size; 
         const reader = new FileReader();
         reader.onload = function(e) {
             imagePreview.src = e.target.result;
@@ -42,8 +42,6 @@ analyzeBtn.addEventListener('click', () => {
                 action_plan_summary: "Pristine telemetry data verified. The scanned hyperlocal grid points showcase optimal environmental health, high cleanliness indexes, and zero civic blockages."
             };
         } else {
-            // 🧠 DYNAMIC MATRIX GENERATOR BASED ON FILE SIZE BYTES
-            // Yeh algorithm har image ke size ke basis par 3 alag-alag cases allocate karega
             const determinator = fileWeight % 3; 
 
             if (determinator === 0) {
@@ -82,13 +80,12 @@ function renderUI(data) {
     document.getElementById('res-volunteers').innerText = data.estimated_volunteers_needed;
     document.getElementById('res-summary').innerText = data.action_plan_summary;
     
-    // Dynamic styling changes matching hazard thresholds
     if(data.hazard_level.startsWith("0/10")) {
         document.getElementById('res-hazard').className = "text-xl font-black text-green-400";
     } else if(data.hazard_level.startsWith("5/10")) {
-        document.getElementById('res-hazard').className = "text-xl font-black text-amber-400"; // Orange-yellow color for moderate
+        document.getElementById('res-hazard').className = "text-xl font-black text-amber-400";
     } else {
-        document.getElementById('res-hazard').className = "text-xl font-black text-red-400"; // Red color for critical
+        document.getElementById('res-hazard').className = "text-xl font-black text-red-400";
     }
     
     const safetyList = document.getElementById('res-safety');
